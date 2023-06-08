@@ -1,0 +1,14 @@
+#!/bin/bash
+current_dir=$(pwd)
+parent_dir=$(dirname "$current_dir")
+html_files=$(find . -name "*.html")
+
+for file in $html_files; do
+    # Get the filename without the path
+    filename=$(basename "$file")
+
+    # Check if the file doesn't exist or is newer in the parent directory
+    if [[ ! -e "$parent_dir/$filename" || "$file" -nt "$parent_dir/$filename" ]]; then
+        rsync -av "$file" "$parent_dir"
+    fi
+done
